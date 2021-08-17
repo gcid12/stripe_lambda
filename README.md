@@ -34,10 +34,20 @@ Amazon Api Gateway -> API -> Settings -> Default EndPoint.
 Looks something like:
 
 ```
-https://6fnbbh45vk.execute-api.us-west-2.amazonaws.com
+https://12345.execute-api.us-west-2.amazonaws.com
 ``
 You need to add the stages, in this case 'dev'
 
 ```
-https://6fnbbh45vk.execute-api.us-west-2.amazonaws.com/dev
+https://12345.execute-api.us-west-2.amazonaws.com/dev
 ```
+
+### TROUBLESHOOTING
+
+In AWS be sure:
+- Stripe SecretKeys are installed as ENV variables,  
+  - AWS Console -> Lambda -> Functions -> s100....createCharge -> Configuration -> Environmental Variables.
+  - this tokens are used here as:" `process.env.STRIPE_SECRET_KEYS`
+- API key Required = false
+
+
