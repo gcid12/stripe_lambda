@@ -1,6 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// ROUTE: /charge/{id} 
+// ROUTE:/charge/{id} 
 // Transactions.js:85 
 // TaskPayment.js:148 
 

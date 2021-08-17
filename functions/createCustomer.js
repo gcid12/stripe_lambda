@@ -10,6 +10,8 @@ module.exports.handler = (event, context, callback) => {
     const email = requestBody.token.email;
     const description = requestBody.description;
 
+    context.succeed(`createCustomer:: ${event}`);
+
     return stripe.customers.create({
       source: token,
       description,

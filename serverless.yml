@@ -56,13 +56,34 @@ functions:
     # The `events` block defines how to trigger the handler.createCharge code
     events:
       - http:
-          path: charges/{id}
+          path: charges
           method: post
           cors: true
           request: 
-          parameters: 
-             paths: 
-               id: true
+  listCharge:
+    handler: functions/listCharge.handler
+    events:
+      - http:
+          path: charges/{id}
+          method: get
+          cors: true
+          request:
+  createTransfer:
+    handler: functions/createTransfer.handler
+    events:
+      - http:
+          path: transfer
+          method: post
+          cors: true
+          request:
+  listTransfer:
+    handler: functions/listTransfer.handler
+    events:
+      - http:
+          path: transfer/{id}
+          method: get
+          cors: true
+          request:
   createCustomer:
     handler: functions/createCustomer.handler
     events:
@@ -71,11 +92,4 @@ functions:
           method: post
           cors: true
           request: 
-  createTransfer:
-    handler: functions/createTransfer.handler
-    events:
-      - http:
-          path: transfer/{id}
-          method: post
-          cors: true
-          request:
+  

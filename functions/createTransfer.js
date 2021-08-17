@@ -1,6 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// ROUTE: /transfer/{id}
+// ROUTE: /transfer/
 // TaskPayment.js:257
 
 module.exports.handler = (event, context, callback) => {
@@ -9,6 +9,8 @@ module.exports.handler = (event, context, callback) => {
     const currency = requestBody.charge.currency;
     const transfer_group = requestBody.transfer_group;
     const destination = requestBody.destination;
+
+    console.log(event);
   
     var chargeId =null;
     if(requestBody.charge.id){
