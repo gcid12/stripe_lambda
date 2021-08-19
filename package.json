@@ -1,5 +1,5 @@
 {
-  "name": "aws-node-stripe-integration",
+  "name": "aws-node-stripe",
   "version": "1.0.0",
   "description": "This example for Stripe integration using AWS Lambda and API Gateway.",
   "main": "handler.js",
@@ -7,6 +7,8 @@
     "config": "^1.24.0",
     "eslint": "^7.32.0",
     "js-yaml": "^3.7.0",
+    "node-fetch": "^2.6.1",
+    "request": "^2.88.2",
     "stripe": "^4.14.0"
   },
   "devDependencies": {},
