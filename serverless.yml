@@ -89,11 +89,11 @@ functions:
     events:
       - http:
           path: customer
-          method: post`
+          method: post
           cors: true
           request: 
   connectUser:
-    handler: functions/connectUser.handler
+    handler: functions/connectUser2.handler
     events:
       - http:
           path: connectuser

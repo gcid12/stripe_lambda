@@ -2,6 +2,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // ROUTE: /transfer/id
 // TaskPayment.js:257
+console.log('Here list charge')
 module.exports.handler = (event, context, callback) => {
     const customer = event.pathParameters.id;
 
@@ -20,6 +21,7 @@ module.exports.handler = (event, context, callback) => {
             })
         };
         callback(null, response)
+        console.log(response)
     })
     .catch(err => {
         const response = {
