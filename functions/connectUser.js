@@ -59,9 +59,11 @@ module.exports.handler = async(event, context, callback) => {
     
     const clientSecret= process.env.STRIPE_SECRET_KEY;
 
+    
     //return fetchStripe(clientSecret, code, grantType);
 
 
+    //OPTION 1
     return fetch(`https://connect.stripe.com/oauth/token`, {
         method: 'POST',
         body: JSON.stringify({
@@ -70,18 +72,40 @@ module.exports.handler = async(event, context, callback) => {
           grant_type: grantType
         })
       })
-    .then(customer => {
-        const response = {
-            statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            },
-            body: JSON.stringify({
-                message: `Connected account?`,
-                customer
-            })
-        };
-        callback(null, response)
+    .then(response => {
+
+        let response2;
+        if(response.status  === 200){
+            //this was ok
+            const { data } = response
+
+            response2 = {
+                statusCode: 200,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                },
+                body: JSON.stringify({
+                    message: `Connected account?`,
+                    data,
+                    user:data.stripe_user_id
+                })
+            };
+            callback(null, response2)
+
+        }else{
+            //this was an error
+            response2 = {
+                statusCode: 500,
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({
+                    error: 'some error'
+                })
+            }
+            callback(null, response2)
+        }
+        
     })
     .catch(err => {
         const response = {
