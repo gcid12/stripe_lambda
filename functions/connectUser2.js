@@ -1,65 +1,11 @@
-
-const https = require('https')
-const axios = require('axios')
-
-
-console.log('connectUser2.8 here')
-
-//NOT ASYNC
-// exports.handler =  function(event, context, callback) {
-
-    
-//     const code = 'ac_K3SPpGI8CdykqzBW1T18QWlmrDqRffYG';
-//     //const grantType = 'authorization_codes';
-
-//     let url = `https://docs.aws.amazon.com/lambda/latest/dg/welcome.html#${code}`
-
-//     https.get(url, (res) => {
-//         callback(null, res.statusCode)
-//         console.log('yes', event)
-//         console.log('url', url)
-//         console.log('res', res)
-
-//     }).on('error', (e) => {
-//         callback(Error(e))
-//         console.log('nope')
-//     })
-// }
-
-//THIS WORKS AND PING STRIPE EFFECTIVELY (NOT ASYNC YET)
-// exports.handler =  function(event, context, callback) {
-
-//     const clientSecret= process.env.STRIPE_SECRET_KEY;
-//     const code = 'ac_K3SPpGI8CdykqzBW1T18QWlmrDqRffYG';
-//     const grantType = 'authorization_codes';
-
-
-
-//     let url = `https://connect.stripe.com/oauth/token?code=${code}&client_secret=${clientSecret}&grant_type=${grantType}`
-
-//     https.get(url, (res) => {
-//         callback(null, res.statusCode)
-//         console.log('event:', event)
-//         console.log('url:', url)
-//         console.log('res:', res)
-
-//     }).on('error', (e) => {
-//         callback(Error(e))
-//         console.log('nope')
-//     })
-// }
-
-
-// USING AXIOS
-
-//Problems:
-//I'm seeing its sending Data, not body as requested by Stripe
-//https://github.com/axios/axios/issues/827#issuecomment-292714260
+const axios = require('axios');
+const {stringify} = require('flatted');
 
 exports.handler =  function(event, context, callback) {
 
+    const code = event.pathParameters.account;
+
     const clientSecret= process.env.STRIPE_SECRET_KEY;
-    const code = 'ac_K3SPpGI8CdykqzBW1T18QWlmrDqRffYG';
     const grantType = 'authorization_code';
 
     let url = `https://connect.stripe.com/oauth/token`
@@ -70,38 +16,41 @@ exports.handler =  function(event, context, callback) {
         grant_type: grantType
     })
     .then(res => {
-        console.log(`statusCode: ${res.status}`)
-        console.log(res)
+    
+        const result = stringify(res);
+        const sui = res.data.stripe_user_id
+    
+        const response = {
+            statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({
+                message: `success Account Linked!`,
+                result,
+                sui,
+            })
+        };
+        callback(null, response)
+
+
     })
-    .catch(error => {
-        console.error(error)
+    .catch(err => {
+        console.error(err)
+
+        const response = {
+            //What Network Tab will see
+            statusCode: 500,
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+            //What Console Tab will see
+            body: JSON.stringify({
+                error: err.message
+            })
+        };
+        callback(null, response)
     })
 }
 
-// AXIOS - BUILDING THE URL
-// exports.handler =  function(event, context, callback) {
-
-//     const clientSecret= process.env.STRIPE_SECRET_KEY;
-//     const code = 'ac_K3SPpGI8CdykqzBW1T18QWlmrDqRffYG';
-//     const grantType = 'authorization_code';
-
-//     let url = `https://connect.stripe.com/oauth/token?code=${code}&client_secret=${clientSecret}&grant_type=${grantType}`
-
-// axios.post(url
-//     )
-//     .then(res => {
-//         console.log(`statusCode: ${res.status}`)
-//         console.log(res)
-//     })
-//     .catch(error => {
-//         console.error(error)
-//     })
-
-// let url = `https://connect.stripe.com/oauth/token`;
-// let data = JSON.stringify({
-//     client_secret: clientSecret,
-//     code: code,
-//     grant_type: grantType
-// })
-// }
 

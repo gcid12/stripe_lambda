@@ -96,7 +96,7 @@ functions:
     handler: functions/connectUser2.handler
     events:
       - http:
-          path: connectuser
+          path: connectuser/{account}
           method: post
           cors: true
           request: 
