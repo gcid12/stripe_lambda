@@ -100,4 +100,12 @@ functions:
           method: post
           cors: true
           request: 
+  createJson:
+    handler: functions/createJson.handler
+    events:
+      - http:
+          path: createjson/{tokenid}
+          method: post
+          cors: true
+          request: 
   

@@ -4,6 +4,8 @@
   "description": "This example for Stripe integration using AWS Lambda and API Gateway.",
   "main": "handler.js",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.40.1",
+    "@aws-sdk/node-http-handler": "^3.40.0",
     "axios": "^0.21.1",
     "config": "^1.24.0",
     "eslint": "^7.32.0",
