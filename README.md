@@ -20,7 +20,7 @@ Locate your profile name located at `~/.aws/credentials`
 
 The add it to Serverless
 
-### Deploying
+### Deploying & Updating
 ```
 serverless deploy --aws-profile <ProfileName>
 serverless deploy --aws-profile default
@@ -50,4 +50,5 @@ In AWS be sure:
   - this tokens are used here as:" `process.env.STRIPE_SECRET_KEYS`
 - API key Required = false
 
-
+- When Deploying changes, be sure you are using a current Node version (here in your computer) Node 14?
+- Before Deploying and specially if its a new 
