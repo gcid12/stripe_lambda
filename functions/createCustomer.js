@@ -9,19 +9,7 @@ module.exports.handler = async(event, context, callback) => {
     const token = requestBody.token.id;
     const email = requestBody.email;
     const description = requestBody.description;
-
-    console.log('v2.1');
-    console.log('event:', event);
     console.log('requestBody:', requestBody);
-    console.log('context:', context);
-    console.log('callback:', callback);
-
-    //context.succeed(`createCustomer:: ${event}`);
-
-    // const customer1 = await stripe.customers.create({
-    //     description: requestBody.description,
-    // });
-    // console.log('customer1',customer1);
 
     return stripe.customers.create({
       source: token,
