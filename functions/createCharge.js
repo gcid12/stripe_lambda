@@ -12,6 +12,9 @@ module.exports.handler = (event, context, callback) => {
     const currency = requestBody.charge.currency;
     const transfer_group = requestBody.transfer_group;
 
+    //TODO: Update to paymentIntents.create, 
+    // CONFIRMED that parameters are the same
+    //return stripe.paymentIntents.create
     return stripe.charges.create({
         amount,
         currency,
