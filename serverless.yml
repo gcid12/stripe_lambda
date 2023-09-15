@@ -114,8 +114,7 @@ functions:
     handler: functions/getUrlMeta.handler
     events:
       - http:
-          #path: getUrlMeta
-          path: getUrlMeta/{url}
+          path: getmeta
           method: get
           cors: true
           request: 

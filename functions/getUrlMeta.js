@@ -1,5 +1,5 @@
-const { parse } = require("url");
-const axios = require('axios');
+//import { got } from 'got';
+const got = require('got');
 
 // Initialize metascraper passing in the list of rules bundles to use.
 const metascraper = require("metascraper")([
@@ -25,16 +25,9 @@ const metascraper = require("metascraper")([
   // require("metascraper-video")(),
 ]);
 
-
-// For an API route to work, you need to export a function as default (a.k.a request handler),
-// which then receives the following parameters:
-// - req: The request object.
-// - res: The response object.
-// See https://vercel.com/docs/serverless-functions/supported-languages#node.js for details.
 module.exports.handler = async function(event, context, callback) {
-  // Parse the "?url" query parameter.
-  
-  var targetUrl = event.pathParameters.url;
+
+  var targetUrl = event.queryStringParameters.url;
   console.log('targetUrl:',targetUrl)
 
   // Make sure the provided URL is valid.
@@ -43,17 +36,51 @@ module.exports.handler = async function(event, context, callback) {
     return;
   }
 
-  try {
-    // Use the got library to fetch the website content.
-    const { body: html, url } = await axios.get(targetUrl);
+  //THIS SIMPLE THING WORKS
+  // axios.get(targetUrl)
+  //   .then(res => {
+    
+  //     console.log(res)
+  //     return res;
+  //   })
 
-    const metadata = await metascraper({ html, url });
-    console.log('metadata:',metadata)
+  
 
-    return json(metadata);
+  const { body: html, url } = await got(targetUrl);
 
-  } catch (err) {
-    console.log(err);
-    //res.status(401).json({ error: `Unable to scrape "${url}".` });
-  }
+  console.log('html:',html);
+  console.log('url:',url);
+  // return html;
+
+  return await metascraper({ html, url })
+  .then(results => {
+    const response = {
+        statusCode: 200,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify({
+            message: `success`,
+            results
+        })
+    };
+    callback(null, response)
+    console.log(response)
+})
+  .catch(err => {
+      const response = {
+          statusCode: 500,
+          headers: {
+              'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify({
+              error: err.message
+          })
+      };
+      callback(null, response)
+  })
+
+
+
+
 }
