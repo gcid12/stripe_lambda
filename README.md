@@ -52,3 +52,6 @@ In AWS be sure:
 
 - When Deploying changes, be sure you are using a current Node version (here in your computer) Node 14?
 - Before Deploying and specially if its a new 
+
+-If Cloudfront fails, be sure your NodeJS versions are supported , Apparently they keep working if it was deployed when it was still supported (Node12), but when you push changes it fails if you are not current.
+  - Also check that your serverless.yml has the right node version.

@@ -19,7 +19,7 @@ service: S100-aws-node-stripe
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   stage: test
   region: us-west-2
 
@@ -43,6 +43,8 @@ package:
     - node_modules/**
   exclude:
     - package.json
+  #IF you want to pack your functions individually
+  #individually: true
 
 functions:
   incoming:
@@ -106,6 +108,15 @@ functions:
       - http:
           path: createjson/{tokenid}
           method: post
+          cors: true
+          request: 
+  getMeta:
+    handler: functions/getUrlMeta.handler
+    events:
+      - http:
+          #path: getUrlMeta
+          path: getUrlMeta/{url}
+          method: get
           cors: true
           request: 
   
