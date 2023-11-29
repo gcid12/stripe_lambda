@@ -35,9 +35,8 @@
     "metascraper-youtube": "^5.36.0",
     "node-fetch": "^2.6.1",
     "request": "^2.88.2",
-    "stripe": "^4.14.0"
+    "stripe": "^14.5.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -110,6 +110,14 @@ functions:
           method: post
           cors: true
           request: 
+  getConnectLink:
+    handler: functions/getConnectLink.handler
+    events:
+      - http:
+          path: getLink
+          method: post
+          cors: true
+          request:
   createJson:
     handler: functions/createJson.handler
     events:

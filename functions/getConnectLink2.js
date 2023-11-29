@@ -2,30 +2,29 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
 module.exports.handler = async(event, context, callback) => {
-    //https://stripe.com/docs/connect/standard-accounts
-    const requestBody = JSON.parse(event.body);
-    const first = requestBody.first;
-    const last = requestBody.last;
-    const email = requestBody.email;
-    const factusId = requestBody.factusId;
 
-    return stripe.accounts.create({
-        type: 'standard',
-        metadata:{ 
-            'factusId': factusId,
-            'email': email,
-            'first': first,
-            'last': last,
-        }
-    }).then(acc => {
+    console.log('EVENT:',event);
+    const requestBody = JSON.parse(event);
+    const account = requestBody.account;
+    const refresh_url = requestBody.refresh_url;
+    const return_url = requestBody.return_url;
+    const type = requestBody.type;
+    console.log('requestBody:', requestBody);
+    
+    return stripe.accountLinks.create({
+        account,
+        refresh_url,
+        return_url,
+        type,
+    }).then(link => {
         const response = {
             statusCode: 200,
             headers: {
                 'Access-Control-Allow-Origin': '*',
             },
             body: JSON.stringify({
-                message: `Account Created`,
-                acc
+                message: `Link Created`,
+                link
             })
         };
         callback(null, response)
