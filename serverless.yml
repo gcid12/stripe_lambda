@@ -118,6 +118,14 @@ functions:
           method: post
           cors: true
           request:
+  getAccountInfo:
+    handler: functions/getAccountInfo.handler
+    events:
+      - http:
+          path: getAccount
+          method: post
+          cors: true
+          request:
   createJson:
     handler: functions/createJson.handler
     events:
@@ -134,4 +142,12 @@ functions:
           method: get
           cors: true
           request: 
+  getCheckoutLink:
+    handler: functions/getCheckoutLink.handler
+    events:
+      - http:
+          path: getCheckoutLink
+          method: post
+          cors: true
+          request:
   
