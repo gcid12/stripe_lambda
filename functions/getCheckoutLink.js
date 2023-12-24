@@ -18,7 +18,7 @@ module.exports.handler = async(event, context, callback) => {
         line_items: [
           {
             price : requestBody.price,
-            quantity: 1,
+            quantity: requestBody.quantity,
           },
         ],
         ui_mode: 'embedded',
