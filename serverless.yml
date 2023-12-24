@@ -150,4 +150,12 @@ functions:
           method: post
           cors: true
           request:
+  getCheckoutSession:
+    handler: functions/getCheckoutSession.handler
+    events:
+      - http:
+          path: getCheckoutSession
+          method: post
+          cors: true
+          request:
   
