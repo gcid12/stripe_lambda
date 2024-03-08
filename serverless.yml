@@ -19,7 +19,7 @@ service: S100-aws-node-stripe
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   stage: test
   region: us-west-2
 
@@ -147,6 +147,22 @@ functions:
     events:
       - http:
           path: getCheckoutLink
+          method: post
+          cors: true
+          request:
+  getSubscriptionCheckoutLink:
+    handler: functions/getSubscriptionCheckoutLink.handler
+    events:
+      - http:
+          path: getSubsCheckoutLink
+          method: post
+          cors: true
+          request:
+  getSubscriptionInfo:
+    handler: functions/getSubscriptionInfo.handler
+    events:
+      - http:
+          path: getSubsInfo
           method: post
           cors: true
           request:
