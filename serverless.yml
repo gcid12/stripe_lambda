@@ -174,4 +174,12 @@ functions:
           method: post
           cors: true
           request:
+  getA1check:
+    handler: functions/getA1check.handler
+    events:
+      - http:
+          path: getA1check
+          method: post
+          cors: true
+          request:
   
