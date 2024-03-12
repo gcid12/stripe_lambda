@@ -1,59 +1,35 @@
 const fetch = require('node-fetch');
-const {gzip, ungzip} = require('node-gzip');
 
 module.exports.handler = async(event, context, callback) => {
     
-    // const requestBody = JSON.parse(event.body);
-    // console.log(requestBody);
-    //https://docs.stripe.com/api/subscriptions/retrieve
-    console.log("MAIL:", process.env.COPYL_MAIL);
+    const requestBody = JSON.parse(event.body);
+    console.log(requestBody);
 
-    const result = []
+    console.log(requestBody.scanId);
+    console.log(requestBody.text);
+
+
     //DIRECT FETCH
-    return await fetch(`https://id.copyleaks.com/v3/account/login/api`, {
+    return await fetch(`https://api.copyleaks.com/v2/writer-detector/${requestBody.scanId}/check`, {
         method: 'post',
         body: JSON.stringify({
-          key: process.env.COPYL_KEY,
-          email: process.env.COPYL_MAIL,
+            text: requestBody.text,
+            //text: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).`,
+            sandbox: true
         }),
-        headers: {'Content-Type': 'application/json'}
-      })
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization' : `Bearer ${process.env.COPYL_TOKEN}`}
+    })
     .then((response) => {
 
         let response2;
         console.log("response",response);
-        const responseString = JSON.stringify(response);
-        console.log("response STRING",responseString);
 
         if(response.status  === 200){
             //this was ok
             const { headers } = response
             console.log("headers:",headers);
 
-
-
-            const { body } = response
-            const bodyString = JSON.stringify(body);
-            //console.log("body:",bodyString);
-
-
-            // ungzip(bodyString).then((c)=>{
-            //   console.log("DecompBody:", c);
-            // })
-
-            // RECEIVING LIKE THIS ON RESPONSE: 'content-encoding': [ 'gzip' ]
-            
-            response2 = {
-                statusCode: 200,
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                },
-                body: JSON.stringify({
-                    message: `Connected account?`,
-                    data: body
-                })
-            };
-            //callback(null, response2)
+            //Returning will trigger Data response
             return response.json(); 
 
         }else{
@@ -72,6 +48,32 @@ module.exports.handler = async(event, context, callback) => {
         
     }).then(data => { 
         console.log('Data received:', data); 
+        if(data){
+            const response = {
+              statusCode: 200,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+              },
+              body: JSON.stringify({
+                message: `Score Result Ready`,
+                score: data
+              })
+            };
+            callback(null, response)
+          }else{
+            const response = {
+              statusCode: 500,
+              headers: {
+                'Access-Control-Allow-Origin': '*'
+              },
+              body: JSON.stringify({
+                error: 'Error, check Lambda Console'
+              })
+            };
+            callback(null, response)
+          }
+
+
     }) 
     .catch(err => {
         const response = {
