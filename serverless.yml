@@ -182,4 +182,12 @@ functions:
           method: post
           cors: true
           request:
+  getA1token:
+    handler: functions/getA1token.handler
+    events:
+      - http:
+          path: getA1token
+          method: post
+          cors: true
+          request:
   
