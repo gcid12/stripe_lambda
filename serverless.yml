@@ -20,7 +20,7 @@ service: S100-aws-node-stripe
 provider:
   name: aws
   runtime: nodejs16.x
-  stage: test
+  #stage: test
   region: us-west-2
 
 # you can add statements to the Lambda function's IAM Role here
@@ -47,12 +47,6 @@ package:
   #individually: true
 
 functions:
-  incoming:
-    handler: handler.incoming
-    events:
-      - http:
-          path: stripe/incoming
-          method: post
   createCharge:
     handler: functions/createCharge.handler
     # The `events` block defines how to trigger the handler.createCharge code
@@ -187,6 +181,14 @@ functions:
     events:
       - http:
           path: getA1token
+          method: post
+          cors: true
+          request:
+  requestCredits:
+    handler: functions/requestCredits.handler
+    events:
+      - http:
+          path: requestCredits
           method: post
           cors: true
           request:

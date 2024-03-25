@@ -20,13 +20,14 @@ Locate your profile name located at `~/.aws/credentials`
 
 The add it to Serverless
 
-### Deploying & Updating
-```
-//Template
-serverless deploy --aws-profile <ProfileName>
 
-//Run this:
-serverless deploy --aws-profile default
+### Deploying to different Stages:
+```
+serverless deploy --stage test --aws-profile default 
+
+//https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/applications/S100-aws-node-stripe-test
+
+serverless deploy --stage live --aws-profile default 
 ```
 
 ### Using
